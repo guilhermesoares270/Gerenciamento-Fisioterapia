@@ -1,31 +1,15 @@
 package view;
 
-//import Custom_Components.TextFieldFormatter;///////
-
 import utility.Paciente;
-
-//import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-
-//import com.sun.javafx.css.converters.StringConverter;
-
-import javafx.beans.property.SimpleStringProperty;
-//import javafx.collections.FXCollections;
-//import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
-//import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-//import javafx.scene.control.ToggleButton;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
-//import javafx.scene.input.KeyEvent;;
-/*
-
-
 
 /*
  * LEMBRA DE COLCOAR A ANOTAÇÃO @FXML
@@ -101,33 +85,79 @@ public class cliente_control {
 	}
 	
 	/*
-	 * pega os dados e da interface e manda para a classe paciente
+	 * pega os dados e da interface e manda para o objeto paciente
 	 */
 	public void getDados() {
 		
-		//Instancia o objeto da classe Paciente
-		Paciente pc = new Paciente();
+		/*
+		 * Pega os dados básicos para criar o paciente
+		 * Instancia o objeto da classe Paciente com os valore obrigatórios
+		 */
 		
-		pc.setNome(new SimpleStringProperty(tf_name.getText()));
+		Paciente pc = new Paciente(
+				tf_name.getText(),
+				tf_email.getText(),
+				Long.parseLong(tf_sus.getText()),
+				Long.parseLong(tf_cpf.getText())
+				);
 		
-		String date;
+		
+		pc.setNascimento(setDate());
+		
+		if(rb_masculino.isSelected()) {
+			pc.setSexo("Masculino");
+		}else {
+			pc.setSexo("Feminino");
+		}
+		
+		pc.setTelefone(Long.parseLong(tf_telefone.getText()));
+		
+		pc.setCelular(Long.parseLong(tf_celular.getText()));
+		
+		pc.setRua(tf_rua.getText());
+		
+		pc.setNumero(Long.parseLong(tf_numero.getText()));
+		
+		pc.setBairro(tf_bairro.getText());
+		
+		pc.setComplemento(tf_complemento.getText());
+		
+		pc.setCep(Long.parseLong(tf_cep.getText()));
+		
+		pc.setUf(cb_uf.getValue());
+		
+		pc.setSintomas(tf_sintomas.getText());
+		
+		pc.setMedicacao(tf_medicacao.getText());
+		
+		pc.setRg(Long.parseLong(tf_rg.getText()));
+		
+		//imprime os dados coletados
+		pc.printData();
+		//SAVE
+		pc.saveData(); 
+	}
+	
+	public String setDate() {
+		String retorno = null;
 		try{
-			
 			//Revisar
-			
 			if(dp_nascimento.getEditor().getText() != null) {
 				System.out.println("Iniciando verificação data");
 				LocalDate ld = dp_nascimento.getValue();
 				if(ld == null) {
-					date = getformatter.format(LocalDate.now());
-					pc.setNascimento(new SimpleStringProperty(date));///////
+					retorno = getformatter.format(LocalDate.now());
+					//date = getformatter.format(ld.now());
+					
+					//date = getformatter.format(LocalDate.now());
+					//pc.setNascimento(date);
 				}else {
-					//date = ld.toString();
-					date = getformatter.format(ld);
-					pc.setNascimento(new SimpleStringProperty(ld.toString()));//////
+					retorno = getformatter.format(ld);
+					System.out.println("Data: " + getformatter.format(ld));
+					//date = getformatter.format(ld);
+					//pc.setNascimento(ld.toString());
 				}
-
-				System.out.println("Data: " + date);
+				//System.out.println("Data: " + date);
 			}else {
 				System.out.println("data vazia");
 			}
@@ -135,75 +165,65 @@ public class cliente_control {
 		}catch(NullPointerException e) {
 			System.out.println(e.getMessage());
 		}
+		return retorno;
+	}
+	
+	public boolean obrigatoryInfo() {
 		
-		if(rb_masculino.isSelected()) {
-			pc.setSexo(new SimpleStringProperty("Masculino"));
-		}else {
-			pc.setSexo(new SimpleStringProperty("Feminino"));
+		boolean retorno = true;
+		
+		if(tf_name.getText().isEmpty()) {
+			tf_name.setStyle("-fx-faint-focus-color: transparent; -fx-focus-color:#eb4d4b;");
+			//tf_name.requestFocus();
+			retorno = false;
+			
+		}if(tf_email.getText().isEmpty()) {
+			tf_email.setStyle("-fx-faint-focus-color: transparent; -fx-focus-color:#eb4d4b;");
+			//tf_email.requestFocus();
+			retorno = false;
+			
+		}if(tf_sus.getText().isEmpty()) {
+			tf_sus.setStyle("-fx-faint-focus-color: transparent; -fx-focus-color:#eb4d4b;");
+			//tf_sus.requestFocus();
+			retorno = false;
+			
+		}if(tf_cpf.getText().isEmpty()) {
+			tf_cpf.setStyle("-fx-faint-focus-color: transparent; -fx-focus-color:#eb4d4b;");
+			//tf_cpf.requestFocus();
+			retorno = false;
 		}
+		System.out.println("Valor de retorno = " + retorno);
+		return retorno;
+	}
+	
+	public boolean checkCPF() {
 		
-		pc.setEmail(new SimpleStringProperty(tf_email.getText()));
-		//String email = tf_email.getText();
-		
-		pc.setTelefone(new SimpleStringProperty(tf_telefone.getText()));
-		//String telefone = tf_telefone.getText();
-		
-		pc.setCelular(new SimpleStringProperty(tf_celular.getText()));
-		//String celular = tf_celular.getText();//regex
-		
-		pc.setRua(new SimpleStringProperty(tf_rua.getText()));
-		//String rua = tf_rua.getText();
-		
-		pc.setNumero(new SimpleStringProperty(tf_numero.getText()));
-		//String numero = tf_numero.getText();
-		
-		pc.setBairro(new SimpleStringProperty(tf_bairro.getText()));
-		//String bairro = tf_bairro.getText();
-		
-		pc.setComplemento(new SimpleStringProperty(tf_complemento.getText()));
-		//String complemento = tf_complemento.getText();
-		
-		pc.setCep(new SimpleStringProperty(tf_cep.getText()));
-		//String cep = tf_cep.getText();
-		
-		pc.setNum_sus(new SimpleStringProperty(tf_sus.getText()));
-		
-		pc.setUf(new SimpleStringProperty(cb_uf.getValue()));//////////
-		
-		pc.setSintomas(new SimpleStringProperty(tf_sintomas.getText()));
-		//String sitomas = tf_sintomas.getText();
-		
-		pc.setMedicacao(new SimpleStringProperty(tf_medicacao.getText()));
-		//String medicacao = tf_medicacao.getText();
-		
-		pc.setRg(new SimpleStringProperty(tf_rg.getText()));
-		//String rg = tf_rg.getText();
-		
-		pc.setCpf(new SimpleStringProperty(tf_cpf.getText()));
-		//String cpf = tf_cpf.getText();
-		
-		//imprime os dados coletados
-		pc.printData();
-		//SAVE
-		//pc.createDB();
-		pc.saveData();
-		//pc.printEntry();
+		boolean retorno = true;
+		//Verifica o CPF
+		if(tf_cpf.getText().length() != 11) {
+			//tf_cpf.setText("Formato inválido");
+			tf_cpf.setStyle("-fx-faint-focus-color: transparent; -fx-focus-color:#eb4d4b;");
+			tf_cpf.requestFocus();
+			retorno = false;
+		}else {
+			if(utility.cpf_checker.valid(tf_cpf.getText())) {
+				//tf_cpf.setText("Is valid");
+				tf_cpf.setStyle("-fx-faint-focus-color: transparent; -fx-focus-color: #039ED3;");//
+				tf_cpf.requestFocus();//
+			}else {
+				//tf_cpf.setText("Invalid");
+				tf_cpf.setStyle("-fx-faint-focus-color: transparent; -fx-focus-color:#eb4d4b;");
+				tf_cpf.requestFocus();
+				retorno = false;
+			}
+		}
+		return retorno;
 	}
 	
 	@FXML
 	private void initialize() {
-		
-		//tf_celularOnKeyReleased();/////////
-		/*
-		tf_telefone.setOnKeyReleased((event) -> {
-			TextFieldFormatter tff = new TextFieldFormatter();
-			tff.setMask("(##)####-####");
-			tff.setCaracteresValidos("0123456789");
-			tff.setTf(tf_telefone);
-			tff.formatter();
-		});
-		*/
 				
+		//Inicia a data com o dia atual
 		dp_nascimento.getEditor().setText(getformatter.format(LocalDate.now()));
 		
 		cb_uf.setPromptText("Estado");
@@ -238,37 +258,24 @@ public class cliente_control {
 			);
 		cb_uf.getSelectionModel().select(0);
 		
+		//Cadastrar
 		bt_cadastrar.setOnAction((event) -> {
 			
-			boolean allFieldsCorrect = false;//////
-			
-			System.out.println(tf_name.getText());
-			
-			//Verifica o CPF
-			if(tf_cpf.getText().length() != 11) {
-				//tf_cpf.setText("Formato inválido");
-				tf_cpf.setStyle("-fx-faint-focus-color: transparent; -fx-focus-color:#eb4d4b;");
-				tf_cpf.requestFocus();
-			}else {
-				if(utility.cpf_checker.valid(tf_cpf.getText())) {
-					//tf_cpf.setText("Is valid");
-					tf_cpf.setStyle("-fx-faint-focus-color: transparent; -fx-focus-color: #039ED3;");//
-					tf_cpf.requestFocus();//
+			//Verifica se as informações básicas foram preenchidas
+			if(obrigatoryInfo()) {
+				System.out.println("As informações básicas estão preenchidas");
+				boolean allFieldsCorrect = true;
+				
+				
+				allFieldsCorrect = checkCPF();
+				
+				if(allFieldsCorrect == true) {
+					System.out.println("Iniciando getDados()");
+					getDados();
 				}else {
-					//tf_cpf.setText("Invalid");
-					tf_cpf.setStyle("-fx-faint-focus-color: transparent; -fx-focus-color:#eb4d4b;");
-					tf_cpf.requestFocus();
+					System.out.println("Existem erros no formulário");
 				}
 			}
-			
-			
-			
-			if(allFieldsCorrect == true) {
-				getDados();
-			}else {
-				System.out.println("Existem erros no formulário");
-			}
-			getDados();
 		});
 	}
 }

@@ -21,6 +21,7 @@ public class consulta_control {
 	
 	Logger logger = Logger.getLogger(this.getClass().getName());
 	
+	//private ObservableList<Paciente> personData = FXCollections.observableArrayList();
 	private ObservableList<Paciente> personData = FXCollections.observableArrayList();
 	
 	@FXML
@@ -59,17 +60,26 @@ public class consulta_control {
 					
 					
 					String nome = rs.getString("name");
-					String cep = rs.getString("cep");
+					//String cep = rs.getString("cep");
 					String email = rs.getString("email");
 					String sus = rs.getString("sus");
 					String cpf = rs.getString("cpf");
 					
+					/*
 					personData.add(new Paciente(
 							new SimpleStringProperty(nome), 
 							new SimpleStringProperty(cep), 
 							new SimpleStringProperty(email),
 							new SimpleStringProperty(sus), 
 							new SimpleStringProperty(cpf)
+							));
+					*/
+					
+					personData.add(new Paciente (
+							nome,
+							email,
+							Integer.parseInt(sus),
+							Integer.parseInt(cpf)
 							));
 				}
 				
@@ -91,8 +101,8 @@ public class consulta_control {
 					*/
 					
 					System.out.println("indexSearch = " + indexSearch);
-					tc_nome.setCellValueFactory(value -> value.getValue().getNome());
-					tc_email.setCellValueFactory(value -> value.getValue().getEmail());
+					tc_nome.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getNome()));
+					tc_email.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getEmail()));
 					//tc_id.setCellValueFactory(value -> new SimpleStringProperty("" + indexSearch));
 					//tc_nome.setCellValueFactory(value -> new SimpleStringProperty(personData.get(indexSearch).getNome().get()));
 					//tc_email.setCellValueFactory(value -> new SimpleStringProperty(personData.get(indexSearch).getEmail().get()));				

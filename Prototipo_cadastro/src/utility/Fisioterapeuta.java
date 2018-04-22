@@ -1,46 +1,39 @@
 package utility;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-//Deve ser chamado o construtor com no mínimo os valores padrão
-public class Paciente extends Pessoa{
+public class Fisioterapeuta extends Pessoa{
 	
-	Logger logger = Logger.getLogger(Paciente.class.getName());
+	Logger logger = Logger.getLogger(Fisioterapeuta.class.getName());
 	
-	//usado apenas para ler, nunca é gravado no db
-	private int id;
+	private long crefito;
 	
-	private long num_sus; 
-	private String sintomas;
-	private String medicacao;
-	//private int endereco_id;
-		
-	//Construtor com apenas os valores obrigatórios 
-	public Paciente(String nome, String email, long num_sus, long cpf) {
+	public Fisioterapeuta(String nome, long crefito) {
 		this.setNome(nome);
-		this.setEmail(email);
-		this.setNum_sus(num_sus);
-		this.setCpf(cpf);
+		this.setCrefito(crefito);
 	}
 	
 	@Override 
 	public void printData() {
 		super.printData();
-		System.out.println(num_sus);
-		System.out.println(sintomas);
-		System.out.println(medicacao);	
+		System.out.println(crefito);
 	}
 	
 	@Override
 	public void printEntry() {
 		sqlite_connect sq = new sqlite_connect();
-		sq.select_from("fisioterapiaSUS.db", "paciente", "*");
+		sq.select_from("fisioterapiaSUS.db", "fisioterapeuta", "*");
 	}
 	
 	@Override
-public void saveData() {
+	public void saveData() {
 		
 		try(Connection conn = DriverManager.getConnection("jdbc:sqlite:" + "fisioterapiaSUS.db")){
 			
@@ -56,9 +49,8 @@ public void saveData() {
 					+ "VALUES (?, ?, ?);";
 			String dados_pessoais = "INSERT INTO dados_pessoais (nome, nascimento, sexo, rg, cpf, endereco_id, contato_id) "
 					+ "VALUES (?, ?, ?, ?, ?, (SELECT MAX(endereco_id) FROM endereco), (SELECT MAX(contato_id) FROM contato));";
-			String paciente = "INSERT INTO paciente (pessoa_id, num_sus, sintomas, medicacao) "
-					+ "VALUES ((SELECT cpf FROM dados_pessoais WHERE dados_pessoais_id = (SELECT MAX(dados_pessoais_id) FROM dados_pessoais)), " 
-					+ "?, ?, ?);";
+			String fisioterapeuta = "INSERT INTO fisioterapeuta (crefito, pessoa_id) "
+					+ "VALUES (?, (SELECT cpf FROM dados_pessoais WHERE dados_pessoais_id = (SELECT MAX(dados_pessoais_id) FROM dados_pessoais)));";
 			
 			//Insert endereco
 			PreparedStatement pst1 = conn.prepareStatement(endereco, Statement.RETURN_GENERATED_KEYS);
@@ -89,51 +81,24 @@ public void saveData() {
 			
 			checkInsert(conn, pst3);
 			
-			//Insert paciente
-			PreparedStatement pst4 = conn.prepareStatement(paciente, Statement.RETURN_GENERATED_KEYS);
-			pst4.setLong(1, num_sus);
-			pst4.setString(2, sintomas);
-			pst4.setString(3, medicacao);
+			//Insert Fisioterapeuta
+			PreparedStatement pst4 = conn.prepareStatement(fisioterapeuta, Statement.RETURN_GENERATED_KEYS);
+			pst4.setLong(1, crefito);
+			
+			pst4.executeUpdate();
 			
 			checkInsert(conn, pst4);
-			
-			conn.commit();
 			
 		}catch(SQLException e) {
 			logger.log(Level.WARNING, e.getMessage(), e);
 		}
 	}
 	
-	public int getId() {
-		return id;
+	public long getCrefito() {
+		return crefito;
 	}
 	
-	public void setId(int id) {
-		this.id = id;
+	public void setCrefito(long crefito) {
+		this.crefito = crefito;
 	}
-	
-	public String getMedicacao() {
-		return medicacao;
-	}
-	
-	public void setMedicacao(String medicacao) {
-		this.medicacao = medicacao;
-	}
-	
-	public String getSintomas() {
-		return sintomas;
-	}
-	
-	public void setSintomas(String sintomas) {
-		this.sintomas = sintomas;
-	}
-	
-	public long getNum_sus() {
-		return num_sus;
-	}
-	
-	public void setNum_sus(long num_sus) {
-		this.num_sus = num_sus;
-	}
-	
 }

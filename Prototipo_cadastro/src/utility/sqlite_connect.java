@@ -31,7 +31,7 @@ public class sqlite_connect {
     
     public void create_table(String DBname, String TableName, String... parameters){
 
-        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:" + DBname)){
+        try (Connection conn = DriverManager.getConnection(JDBC + DBname)){
             
                 //String create = "CREATE TABLE " + TableName + " (";
                 
@@ -66,6 +66,7 @@ public class sqlite_connect {
         }
     }
     
+    /*
     public void alter_table(String DBname, String table_name, String where[], String parameters[]){
         
         //try(Connection conn = DriverManager.getConnection(JDBC + DBname)){
@@ -74,11 +75,12 @@ public class sqlite_connect {
             String n = "UPADATE dados SET nome = nome";
         //}
     }
+    */
     
     //need to get the values 
     public void insert_table(String DBname, String table, String... parameters){
         
-        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:" + DBname)){  
+        try (Connection conn = DriverManager.getConnection(JDBC + DBname)){  
                 
                 //String insert = "INSERT INTO " + table + " VALUES (";
                 
@@ -109,7 +111,7 @@ public class sqlite_connect {
     //Need improvement. It needs to print the results in a generic way
     public void select_from(String DBname, String table, String... parameters){
         
-        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:" + DBname)){
+        try (Connection conn = DriverManager.getConnection(JDBC + DBname)){
                 /*
                 *A classe String é imutável, ou seja, toda vez que é invocada cria outro objeto
                 *Os chars internos não mudam
@@ -166,7 +168,8 @@ public class sqlite_connect {
                          }
                          //System.out.printf("  %s: %s(%s)%n",
                          //columnNames.get(colIndex), objContent, objType);
-                         printResultSet("     " + columnNames.get(colIndex) + " " + objContent + objType);
+                         System.out.println("     " + columnNames.get(colIndex) + " " + objContent + objType);
+                         //printResultSet("     " + columnNames.get(colIndex) + " " + objContent + objType);
                      }    
                 }
                  
@@ -181,8 +184,9 @@ public class sqlite_connect {
             }
     }
     
-    
-    private <T> void printResultSet(T... t){
+    /*
+    //@SuppressWarnings("unchecked")
+	private <T> void printResultSet(T... t){
         
         for(int i = 0; i <= t.length; i++){
             
@@ -192,17 +196,7 @@ public class sqlite_connect {
                 System.out.println(t[i]);
             }
         }
-           
-        /*
-        for(T element : t){
-            if(element == null){
-                //do nothing
-            }else{
-                System.out.println(element);
-            }  
-        }
-        */
     }   
-    
+    */
     
 }

@@ -8,7 +8,7 @@ package utility;
 
 public class cpf_checker {
 	
-	private String cpf;
+	//private String cpf;
 	//private int j;
 	//private int  k;
 	
@@ -17,26 +17,7 @@ public class cpf_checker {
 	//Construtor
 	//Vai chamar as funções para validar os dois numeros
 	public cpf_checker(String  cpf){
-		//setCpf(cpf);
-		//separate_cpf("97849979834");
-		/*
-		separate_cpf(cpf);
-		j = validate_first();
-		k = validate_second();
-		
-		System.out.println("Valor de j = " + j);
-		System.out.println("Valor de k = " + k);
-		System.out.println("Valor de cpf = " + cpf_part[(cpf_part.length - 2)]);
-		System.out.println("Valor de cpf = " + cpf_part[(cpf_part.length - 1)]);
-		if(j == Character.getNumericValue(cpf_part[(cpf_part.length - 2)]) && k == Character.getNumericValue(cpf_part[(cpf_part.length - 1)])) {
-			
-			System.out.println("O cpf é valido");
-		}else {
-			System.out.println("cpf inválido");
-		}
-		*/
-		
-		//valid();
+
 	}
 	
 	public static boolean valid(String cpf) {
@@ -49,10 +30,10 @@ public class cpf_checker {
 		j = validate_first();
 		k = validate_second();
 		
-		System.out.println("Valor de j = " + j);
-		System.out.println("Valor de k = " + k);
-		System.out.println("Valor de cpf = " + cpf_part[(cpf_part.length - 2)]);
-		System.out.println("Valor de cpf = " + cpf_part[(cpf_part.length - 1)]);
+		//System.out.println("Valor de j = " + j);
+		//System.out.println("Valor de k = " + k);
+		//System.out.println("Valor de cpf = " + cpf_part[(cpf_part.length - 2)]);
+		//System.out.println("Valor de cpf = " + cpf_part[(cpf_part.length - 1)]);
 		if(j == Character.getNumericValue(cpf_part[(cpf_part.length - 2)]) && k == Character.getNumericValue(cpf_part[(cpf_part.length - 1)])) {
 			valid = true;
 			System.out.println("O cpf é valido");
@@ -68,7 +49,7 @@ public class cpf_checker {
 		cpf_part = String.valueOf(cpf).toCharArray();
 		
 		for(int i = 11; i >= 1; i--) {
-			System.out.println(cpf_part[i - 1]);
+			//System.out.println(cpf_part[i - 1]);
 		}
 	}
 	
@@ -91,7 +72,7 @@ public class cpf_checker {
 		}else if(res >= 2 && res <= 10) {
 			res = 11 - res;
 		}
-		System.out.println("res = " + res);
+		//System.out.println("res = " + res);
 		return res;
 	}
 	
@@ -101,7 +82,7 @@ public class cpf_checker {
 		
 		for(int i = 0; i <= 9; i++) {
 			res += Character.getNumericValue(cpf_part[i]) * cur_mult;
-			System.out.println("Res = " + res + " cur_mult: " + cur_mult);
+			//System.out.println("Res = " + res + " cur_mult: " + cur_mult);
 			cur_mult--;
 		}
 		res = res % 11;
@@ -111,7 +92,7 @@ public class cpf_checker {
 		}else if(res >= 2 && res <= 10) {
 			res = 11 - res;
 		}
-		System.out.println("res = " + res);
+		//System.out.println("res = " + res);
 		return res;
 	}
 	

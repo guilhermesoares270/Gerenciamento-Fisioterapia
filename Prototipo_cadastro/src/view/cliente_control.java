@@ -17,7 +17,7 @@ import javafx.scene.control.ToggleGroup;
 public class cliente_control {
 	
 	//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-	DateTimeFormatter getformatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+	public static DateTimeFormatter getformatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 	
 	@FXML
 	private Button bt_cadastrar;
@@ -267,7 +267,8 @@ public class cliente_control {
 				boolean allFieldsCorrect = true;
 				
 				
-				allFieldsCorrect = checkCPF();
+				//allFieldsCorrect = checkCPF();
+				allFieldsCorrect = true;
 				
 				if(allFieldsCorrect == true) {
 					System.out.println("Iniciando getDados()");

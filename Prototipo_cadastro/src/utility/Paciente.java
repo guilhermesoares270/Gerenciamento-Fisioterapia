@@ -16,9 +16,37 @@ public class Paciente extends Pessoa{
 	private String sintomas;
 	private String medicacao;
 	//private int endereco_id;
+	
+	
+	public Paciente(String nome, String nascimento, String sexo, String email, long telefone, long celular, long rg,
+			long cpf, String rua, long numero, String bairro, String complemento, long cep, String uf,
+			long num_sus, String sintomas, String medicacao) {
+		super(nome, nascimento, sexo, email, telefone, celular, rg, cpf, rua, numero, bairro, complemento, cep, uf);
+		/*
+		this.nome = nome;
+		this.nascimento = nascimento;
+		this.sexo = sexo;
+		this.email = email;
+		this.telefone = telefone;
+		this.celular = celular;
+		this.rg = rg;
+		this.cpf = cpf;
+		this.rua = rua;
+		this.numero = numero;
+		this.bairro = bairro;
+		this.complemento = complemento;
+		this.cep = cep;
+		this.uf = uf;
+		*/
 		
+		this.setNum_sus(num_sus);
+		this.setSintomas(sintomas);
+		this.setMedicacao(medicacao);
+	}
+	
 	//Construtor com apenas os valores obrigatórios 
 	public Paciente(String nome, String email, long num_sus, long cpf) {
+		super();
 		this.setNome(nome);
 		this.setEmail(email);
 		this.setNum_sus(num_sus);
@@ -40,7 +68,7 @@ public class Paciente extends Pessoa{
 	}
 	
 	@Override
-public void saveData() {
+	public void saveData() {
 		
 		try(Connection conn = DriverManager.getConnection("jdbc:sqlite:" + "fisioterapiaSUS.db")){
 			

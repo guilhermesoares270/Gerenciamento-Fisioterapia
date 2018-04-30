@@ -26,7 +26,32 @@ public abstract class Pessoa {
 	protected String complemento;
 	protected long cep;
 	protected String uf;
-
+	
+	public Pessoa(String nome, String nascimento, String sexo, String email, long telefone, long celular, long rg,
+			long cpf, String rua, long numero, String bairro, String complemento, long cep, String uf) {
+		this.setNome(nome);
+		this.setNascimento(nascimento);
+		this.setSexo(sexo);
+		this.setEmail(email);
+		this.setTelefone(telefone);
+		this.setCelular(celular);
+		this.setRg(rg);
+		this.setCpf(cpf);
+		this.setRua(rua);
+		this.setNumero(numero);
+		this.setBairro(bairro);
+		this.setComplemento(complemento);
+		this.setCep(cep);
+		this.setUf(uf);
+	}
+	
+	public Pessoa() {
+		
+	}
+	
+	public void entryData() {
+		
+	}
 	
 	public void printData() {
 		System.out.println(nome);

@@ -15,6 +15,14 @@ public class Fisioterapeuta extends Pessoa{
 	
 	private long crefito;
 	
+	public Fisioterapeuta(String nome, String nascimento, String sexo, String email, long telefone, long celular, long rg,
+			long cpf, String rua, long numero, String bairro, String complemento, long cep, String uf,
+			long crefito) {
+		super(nome, nascimento, sexo, email, telefone, celular, rg, cpf, rua, numero, bairro, complemento, cep, uf);
+		this.setCrefito(crefito);
+	}
+	
+	//Construtor com apenas os valores obrigatórios
 	public Fisioterapeuta(String nome, long crefito) {
 		this.setNome(nome);
 		this.setCrefito(crefito);

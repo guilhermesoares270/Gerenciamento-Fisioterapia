@@ -106,7 +106,7 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <NumberTextField fx:id="tf_numero" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                  <TextField fx:id="tf_numero" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                   <Label text="Bairro" GridPane.rowIndex="8">
                      <font>
                         <Font size="16.0" />
@@ -147,7 +147,7 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <NumberTextField fx:id="tf_rg" GridPane.columnIndex="1" GridPane.rowIndex="15" />
+                  <TextField fx:id="tf_rg" GridPane.columnIndex="1" GridPane.rowIndex="15" />
                   <Label text="CPF" GridPane.rowIndex="16">
                      <font>
                         <Font size="16.0" />

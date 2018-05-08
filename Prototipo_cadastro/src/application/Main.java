@@ -16,11 +16,6 @@ public class Main extends Application
 	
 	private Stage primaryStage;
 	//private BorderPane rootLayout;
-	private AnchorPane rootLayout;
-	
-    private AnchorPane cadastroPessoa;
-    private SplitPane consulta;
-    private AnchorPane personDeatails;
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -28,26 +23,30 @@ public class Main extends Application
 		this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Fisioterapia");
 		
-        initConsultar();
+        initConsulta();
+        
+        //initConsultar();
         
         //initCadastro();
         //initTest();
-        //showPersonDeatils();
+        //showPersonDeatails();
         //initPesquisar();
 	}
 	
-	public void initTest() {
+	public void initConsulta() {
+		
 		try {
-			AnchorPane cadastro = (AnchorPane) FXMLLoader.load(Main.class.getResource("/view/teste.fxml"));
+			AnchorPane cadastro = (AnchorPane) FXMLLoader.load(Main.class.getResource("/view/consulta.fxml"));
 			Scene scene = new Scene(cadastro);
-			
 			
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Cadastro de Clientes");
+			primaryStage.resizableProperty().setValue(Boolean.FALSE);
 			primaryStage.show();
 		}catch(Exception e) {
 			info.info(e.getMessage());
 		}
+		
 	}
 	
 	public void initCadastro() {
@@ -55,7 +54,6 @@ public class Main extends Application
 		try {
 			AnchorPane cadastro = (AnchorPane) FXMLLoader.load(Main.class.getResource("/view/cadastro_cliente.fxml"));
 			Scene scene = new Scene(cadastro);
-			
 			
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Cadastro de Clientes");
@@ -67,34 +65,14 @@ public class Main extends Application
 	
 	public void initConsultar() {
 		
-		try {
-			
-            AnchorPane rootLayout = (AnchorPane) FXMLLoader.load(Main.class.getResource("/view/consultar.fxml"));
+		try {		
+            AnchorPane rootLayout = (AnchorPane) FXMLLoader.load(Main.class.getResource("/view/sistema_pesquisa.fxml"));
             
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
             primaryStage.setTitle("Consulta");
             primaryStage.show();
-            
-		
-		}catch(Exception e) {
-			info.info(e.getMessage());
-		}
-	}
-	
-	public void initConsulta() {
-		
-		try {
-			
-            AnchorPane rootLayout = (AnchorPane) FXMLLoader.load(Main.class.getResource("/view/consulta.fxml"));
-            
-            // Show the scene containing the root layout.
-            Scene scene = new Scene(rootLayout);
-            primaryStage.setScene(scene);
-            primaryStage.setTitle("Consulta");
-            primaryStage.show();
-            
 		
 		}catch(Exception e) {
 			info.info(e.getMessage());
@@ -119,11 +97,11 @@ public class Main extends Application
 		}    
 	}
 	
-	public void showPersonDeatils() {
+	public void showPersonDeatails() {
 		
 		try {
 			
-            AnchorPane rootLayout = (AnchorPane) FXMLLoader.load(Main.class.getResource("/view/consultar.fxml"));
+            AnchorPane rootLayout = (AnchorPane) FXMLLoader.load(Main.class.getResource("/view/personDetails.fxml"));
             
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);

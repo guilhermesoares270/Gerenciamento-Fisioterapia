@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="393.0" prefWidth="800.0" stylesheets="@teste.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.consulta_control">
+   <children>
+      <ImageView fitHeight="393.0" fitWidth="800.0" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@../../../../../Área%20de%20trabalho/fundo_progrma_certo-01.jpg" />
+         </image>
+      </ImageView>
+      <HBox layoutX="-1.0" layoutY="29.0" prefHeight="371.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0">
+         <children>
+            <AnchorPane fx:id="leftPane" prefHeight="378.0" prefWidth="401.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label text="Cadastro de clientes">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </Label>
+                  <Label layoutY="20.0" />
+                  <VBox layoutY="36.0" prefHeight="335.0" prefWidth="303.0" spacing="3.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="36.0">
+                     <children>
+                        <Label text="Paciente" />
+                        <TextField fx:id="paciente1" prefHeight="26.0" prefWidth="218.0" />
+                        <Label text="Paciente" />
+                        <TextField fx:id="paciente2" />
+                        <Label text="Paciente" />
+                        <TextField fx:id="paciente3" />
+                        <Label text="Fisioterapeuta" />
+                        <TextField fx:id="fisioterapeuta" />
+                        <Button fx:id="cadastrar" mnemonicParsing="false" prefHeight="53.0" prefWidth="94.0" text="Cadastrar" />
+                     </children>
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                  </VBox>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="rightPane" prefHeight="378.0" prefWidth="307.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutY="28.0" prefHeight="24.0" prefWidth="403.0" text="Escolha o Horario da consulta" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER" layoutY="108.0" prefHeight="92.0" prefWidth="465.0" AnchorPane.bottomAnchor="227.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="108.0">
+                     <children>
+                        <Pane fx:id="hor1" prefHeight="100.0" prefWidth="110.0">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutY="14.0" prefHeight="21.0" prefWidth="110.0" text="Horario">
+                                 <font>
+                                    <Font size="17.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER" layoutY="35.0" prefHeight="21.0" prefWidth="110.0" text="7:00">
+                                 <font>
+                                    <Font size="34.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Pane>
+                        <Pane fx:id="hor2" prefHeight="100.0" prefWidth="110.0">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutY="14.0" prefHeight="21.0" prefWidth="110.0" text="Horario">
+                                 <font>
+                                    <Font size="17.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER" layoutY="35.0" prefHeight="21.0" prefWidth="110.0" text="7:50">
+                                 <font>
+                                    <Font size="34.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                        <Pane fx:id="hor3" prefHeight="100.0" prefWidth="110.0">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutY="14.0" prefHeight="21.0" prefWidth="110.0" text="Horario">
+                                 <font>
+                                    <Font size="17.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER" layoutY="35.0" prefHeight="21.0" prefWidth="110.0" text="8:40">
+                                 <font>
+                                    <Font size="34.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" layoutY="195.0" prefHeight="92.0" prefWidth="403.0" AnchorPane.bottomAnchor="140.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="195.0">
+                     <children>
+                        <Pane fx:id="hor4" prefHeight="100.0" prefWidth="110.0">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutY="14.0" prefHeight="21.0" prefWidth="110.0" text="Horario">
+                                 <font>
+                                    <Font size="17.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER" layoutY="35.0" prefHeight="21.0" prefWidth="110.0" text="1:00">
+                                 <font>
+                                    <Font size="34.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Pane>
+                        <Pane fx:id="hor5" prefHeight="100.0" prefWidth="110.0">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutY="14.0" prefHeight="21.0" prefWidth="110.0" text="Horario">
+                                 <font>
+                                    <Font size="17.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER" layoutY="35.0" prefHeight="21.0" prefWidth="110.0" text="1:50">
+                                 <font>
+                                    <Font size="34.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                        <Pane fx:id="hor6" prefHeight="100.0" prefWidth="110.0">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutY="14.0" prefHeight="21.0" prefWidth="110.0" text="Horario">
+                                 <font>
+                                    <Font size="17.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER" layoutY="35.0" prefHeight="21.0" prefWidth="110.0" text="2:40">
+                                 <font>
+                                    <Font size="34.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" layoutX="65.0" layoutY="80.0" prefHeight="16.0" prefWidth="403.0" AnchorPane.bottomAnchor="331.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0" />
+                  <HBox alignment="CENTER" layoutY="65.0" prefHeight="29.0" prefWidth="403.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="65.0">
+                     <children>
+                        <DatePicker fx:id="day" prefHeight="26.0" prefWidth="273.0" promptText="Escolha o Dia" />
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

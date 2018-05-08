@@ -18,6 +18,5 @@ public class NumberTextField extends TextField{
 	@Override
 	public void replaceSelection(String string) {
 		super.replaceSelection(string);
-	}
-	
+	}	
 }

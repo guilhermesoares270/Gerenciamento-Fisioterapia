@@ -1,38 +1,50 @@
 package view;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
-import application.Main;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import utility.Fisioterapeuta;
 import utility.Paciente;
+import utility.Pessoa;
 import utility.sqlite_connect;
 
 public class pesquisa_control {
 	
-	private Main main;
+	//teste
+	private long limit = 2;
+	private long offset = 0;
 	
-	private int indexSearch = 0;
+	private long indexSearch = limit;
+	private String consultar;
+	private long maxNumberOfResults;
+	//private long limiteInicio = 0, limiteFim = 2;
 	
 	Logger logger = Logger.getLogger(this.getClass().getName());
 	
 	//private ObservableList<Paciente> personData = FXCollections.observableArrayList();
-	private ObservableList<Paciente> personData = FXCollections.observableArrayList();
+	private ObservableList<Pessoa> personData = FXCollections.observableArrayList();
+	
+	//Valor selectionado pelo mouse
+	private Pessoa selected_pessoa = null;
 	
 	@FXML
 	private TextField tf_pesquisa;
@@ -40,129 +52,253 @@ public class pesquisa_control {
 	@FXML
 	private Button bt_pesquisar;
 	
+	@FXML 
+	private Button bt_anterior;
+	
 	@FXML
-	private TableView<Paciente> tv_tabela;
+	private Button bt_proximo;
+	
 	@FXML
-	private TableColumn<Paciente, String> tc_cargo;
+	private Label lb_pageNumber;
+	
 	@FXML
-	private TableColumn<Paciente, String> tc_nome;
+	//private TableView<Paciente> tv_tabela;
+	public TableView<Pessoa> tv_tabela;
 	@FXML
-	private TableColumn<Paciente, String> tc_email;
+	//private TableColumn<Paciente, String> tc_cargo;
+	private TableColumn<Pessoa, String> tc_cargo;
+	@FXML
+	//private TableColumn<Paciente, String> tc_nome;
+	private TableColumn<Pessoa, String> tc_nome;
+	@FXML
+	//private TableColumn<Paciente, String> tc_email;
+	private TableColumn<Pessoa, String> tc_email;
 	
 	@FXML
 	private ComboBox<String> cb_busca;
-	
+
 	@FXML
-	private void initialize() {
+	private void initialize() throws IOException {
+
+        /////////////////////////////////////////////////////////////////
 		cb_busca.setPromptText("Busca");
 		cb_busca.getItems().addAll("Todos","Paciente", "Fisioterapeuta");
+
+		bt_anterior.setOnAction((event) -> {
+			System.out.println("Anterior pressed");
+			if(indexSearch >= 4) {//original 20
+				System.out.println("index >= 4");
+				indexSearch -= limit;
+				
+				offset -= 2;
+				
+				personData.clear();///remove all elements of the list
+				tv_tabela.getItems().clear();
+				searchData(consultar);//procura
+				
+				setTable();
+			}
+		});
 		
-		tv_tabela.setOnMouseClicked((event) -> {
-			System.out.println("Clicou");
-			
-			TableCell tb = new TableCell();
-			//Object item = cell.getTableRow().getItem();
-			System.out.println("Evento " + event.getTarget());
-			System.out.println(tb.getTableRow().getItem());
-			
+		bt_proximo.setOnAction((event) -> {
+			System.out.println("Próximo pressed");
+			if(indexSearch >= 2 && indexSearch < maxNumberOfResults) {
+				System.out.println("Maior que 2 e menor que maxResult");
+				
+				indexSearch += limit;
+				
+				if(indexSearch <= maxNumberOfResults) {
+					offset += 2;
+					
+					personData.clear();///remove all elements of the list
+					tv_tabela.getItems().clear();
+					searchData(consultar);//procura
+					
+					setTable();
+				}
+				
+			}
 		});
 		
 		bt_pesquisar.setOnAction((event) -> {
 			
 			//if the list have itens the list will be cleaned
-			clean();
+			//clean();
 			
-			String consultar = tf_pesquisa.getText();
+			consultar = tf_pesquisa.getText();
 			System.out.println("Consultar  = " + consultar);
 			
-			try(Connection conn = DriverManager.getConnection(sqlite_connect.JDBC + "fisioterapiaSUS.db")){
+			searchData(consultar);
+			
+			setTable();
+			
+		});	
+	}
+	
+	public void setTable() {
+		//Printa a lista
+		System.out.println("Tamanho da lista: " + personData.size());
 
-				String search = "SELECT * FROM dados_pessoais dp "
+		int i = 0;
+		while(i < personData.size()) {
+			
+			//System.out.println("indexSearch = " + indexSearch);
+			tc_nome.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getNome()));
+			tc_email.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getEmail()));
+			
+			i++;
+		}
+		
+		//Mostra os dados na tabela
+		tv_tabela.getItems().addAll(personData);//original
+	}
+	
+	public void searchData(String consultar) {
+		
+		String buscaPaciente = "paciente";
+		String buscaFisioterapeuta = "fisioterapeuta";
+
+		try(Connection conn = DriverManager.getConnection(sqlite_connect.JDBC + "fisioterapiaSUS.db")){
+			
+			Statement stmt = null;
+			ResultSet rs = null;
+			
+			if(consultar.matches("\\d+") | consultar.length() == 11) {
+					
+				String searchByCpf = "SELECT * FROM dados_pessoais dp "
 						+ "LEFT JOIN endereco ed ON ed.endereco_id = dp.endereco_id  "
 						+ "LEFT JOIN contato ct ON ct.contato_id = dp.contato_id "
-						+ "LEFT JOIN paciente pt ON pt.pessoa_id = dp.cpf WHERE dp.nome = '" + consultar + "';";
+						+ "LEFT JOIN paciente pt ON pt.pessoa_id = dp.cpf "	
+						+ "WHERE dp.cpf = '" + consultar + "' LIMIT " + limit + " OFFSET "+ offset + ";";
 				
-				System.out.println("Search: " + search);
+				maxNumberOfResults = getMaxResults();
+				System.out.println("Numero máximo de resultados: " + maxNumberOfResults);
 				
-				Statement stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery(search);
 				
-				while(rs.next()) {
-					
-					//Dados pessoais
-					String nome = rs.getString("nome");
-					//String nascimento = rs.getDate("nascimento").toString();
-					String nascimento = rs.getString("nascimento");
-					String sexo = rs.getString("sexo");
-					long rg = rs.getLong("rg");
-					long cpf = rs.getLong("cpf");
-					
-					//Endereço
-					String rua = rs.getString("rua");
-					long numero = rs.getLong("numero");
-					String bairro = rs.getString("bairro");
-					String complemento = rs.getString("complemento");
-					long cep = rs.getLong("cep");
-					String uf = rs.getString("uf");
-					
-					//Contato
-					String email = rs.getString("email");
-					long telefone = rs.getLong("telefone");
-					long celular = rs.getLong("celular");
-					
-					//Paciente
-					long num_sus = rs.getLong("num_sus");
-					String sintomas = rs.getString("sintomas");
-					String medicacao = rs.getString("medicacao");
-					
-					//new Paciente(nome, nascimento, sexo, email, telefone, celular, rg, cpf, rua, numero, bairro, complemento, cep, uf, num_sus, sintomas, medicacao);
-					
-					personData.add(new Paciente (
-							nome, 
-							nascimento, 
-							sexo, 
-							email, 
-							telefone, 
-							celular, 
-							rg, 
-							cpf, 
-							rua, 
-							numero, 
-							bairro,
-							complemento, 
-							cep, 
-							uf,
-							num_sus,
-							sintomas,
-							medicacao
-					));
-					
-				}
+				System.out.println("Search: " + searchByCpf);
 				
-				//Printa a lista
-				System.out.println("Tamanho da lista: " + personData.size());
+				stmt = conn.createStatement();
+				rs = stmt.executeQuery(searchByCpf);
 				
-				//indexSearch = 1;
-				int i = 0;
-				while(i < personData.size()) {
-					
-					System.out.println("indexSearch = " + indexSearch);
-					tc_nome.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getNome()));
-					tc_email.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getEmail()));
-		
-					indexSearch++;
-					i++;
-				}
-				
-				//Mostra os dados na tabela
-				tv_tabela.getItems().addAll(personData);
+			}else {
 
-			}catch(SQLException e) {
-				logger.log(Level.WARNING, e.getMessage(), e);
+				String searchByName = "SELECT * FROM dados_pessoais dp "
+						+ "LEFT JOIN endereco ed ON ed.endereco_id = dp.endereco_id  "
+						+ "LEFT JOIN contato ct ON ct.contato_id = dp.contato_id "
+						+ "LEFT JOIN paciente pt ON pt.pessoa_id = dp.cpf "
+						+ "WHERE dp.nome = '" + consultar + "'" + " COLLATE NOCASE " + "LIMIT " + limit + " OFFSET "+ offset + ";";
+				
+				maxNumberOfResults = getMaxResults();
+				System.out.println("Numero máximo de resultados: " + maxNumberOfResults);
+			
+				lb_pageNumber.setText("1/" + maxNumberOfResults);
+				
+				System.out.println("Search: " + searchByName);
+				
+				stmt = conn.createStatement();
+				rs = stmt.executeQuery(searchByName);
+			}		
+
+			while(rs.next()) {
+				
+				//Dados pessoais
+				String nome = rs.getString("nome");
+				String nascimento = rs.getString("nascimento");
+				String sexo = rs.getString("sexo");
+				long rg = rs.getLong("rg");
+				long cpf = rs.getLong("cpf");
+				
+				//Endereço
+				String rua = rs.getString("rua");
+				long numero = rs.getLong("numero");
+				String bairro = rs.getString("bairro");
+				String complemento = rs.getString("complemento");
+				long cep = rs.getLong("cep");
+				String uf = rs.getString("uf");
+				
+				//Contato
+				String email = rs.getString("email");
+				long telefone = rs.getLong("telefone");
+				long celular = rs.getLong("celular");
+				
+				//Paciente
+				long num_sus = rs.getLong("num_sus");
+				String sintomas = rs.getString("sintomas");
+				String medicacao = rs.getString("medicacao");
+				
+				//new Paciente(nome, nascimento, sexo, email, telefone, celular, rg, cpf, rua, numero, bairro, complemento, cep, uf, num_sus, sintomas, medicacao);
+				
+				personData.add(new Paciente (
+						nome, 
+						nascimento, 
+						sexo, 
+						email, 
+						telefone, 
+						celular, 
+						rg, 
+						cpf, 
+						rua, 
+						numero, 
+						bairro,
+						complemento, 
+						cep, 
+						uf,
+						num_sus,
+						sintomas,
+						medicacao
+				));
 			}
-		});
-		
+			
+			System.out.println("Tamanho do index " + indexSearch);
+			
+		}catch(SQLException e) {
+			e.getSQLState();
+			e.getStackTrace();
+		}	
 	}
+	
+	//Revisar
+	public long getMaxResults() {
+		long counter = 0;
+		try(Connection conn = DriverManager.getConnection(sqlite_connect.JDBC + "fisioterapiaSUS.db")){
+
+			Statement stmt = null;
+			ResultSet res = null;
+			
+			if(consultar.matches("\\d+") | consultar.length() == 11) {
+				
+				stmt = conn.createStatement();
+				res = stmt.executeQuery("SELECT * FROM dados_pessoais dp "  
+						+ "LEFT JOIN endereco ed ON ed.endereco_id = dp.endereco_id " 
+						+ "LEFT JOIN contato ct ON ct.contato_id = dp.contato_id " 
+						+ "LEFT JOIN paciente pt ON pt.pessoa_id = dp.cpf "  
+						+ "WHERE dp.cpf = '" + consultar + "'");
+			}else {
+				stmt = conn.createStatement();
+				res = stmt.executeQuery("SELECT * FROM dados_pessoais dp "  
+						+ "LEFT JOIN endereco ed ON ed.endereco_id = dp.endereco_id " 
+						+ "LEFT JOIN contato ct ON ct.contato_id = dp.contato_id " 
+						+ "LEFT JOIN paciente pt ON pt.pessoa_id = dp.cpf "  
+						+ "WHERE dp.nome = '" + consultar + "'");
+			}	
+			
+			while(res.next()) {
+				counter++;
+			}
+		}catch(SQLException e) {
+			e.getStackTrace();
+		}
+		return counter;
+	}
+	
+	//Pessoa getters and setter
+		public void setPessoa(Pessoa pessoa) {
+			this.selected_pessoa = pessoa;
+		}
+		
+		public Pessoa getPessoa() {
+			return selected_pessoa;
+		}
 	
 	public void clean() {
 		

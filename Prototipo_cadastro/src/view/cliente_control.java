@@ -147,21 +147,13 @@ public class cliente_control {
 				LocalDate ld = dp_nascimento.getValue();
 				if(ld == null) {
 					retorno = getformatter.format(LocalDate.now());
-					//date = getformatter.format(ld.now());
-					
-					//date = getformatter.format(LocalDate.now());
-					//pc.setNascimento(date);
 				}else {
 					retorno = getformatter.format(ld);
 					System.out.println("Data: " + getformatter.format(ld));
-					//date = getformatter.format(ld);
-					//pc.setNascimento(ld.toString());
 				}
-				//System.out.println("Data: " + date);
 			}else {
 				System.out.println("data vazia");
-			}
-			
+			}		
 		}catch(NullPointerException e) {
 			System.out.println(e.getMessage());
 		}

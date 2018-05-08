@@ -35,8 +35,8 @@
             <TableColumn fx:id="tc_email" prefWidth="117.0" text="E-MAIL" />
          </columns>
       </TableView>
-      <Button layoutX="27.0" layoutY="416.0" mnemonicParsing="false" text="Anterior" />
-      <Button layoutX="236.0" layoutY="415.0" mnemonicParsing="false" text="Proximo" />
-      <Label layoutX="152.0" layoutY="421.0" text="1/8" />
+      <Button fx:id="bt_anterior" layoutX="27.0" layoutY="416.0" mnemonicParsing="false" text="Anterior" />
+      <Button fx:id="bt_proximo" layoutX="236.0" layoutY="415.0" mnemonicParsing="false" text="Proximo" />
+      <Label fx:id="lb_pageNumber" layoutX="152.0" layoutY="421.0" text="1/8" />
    </children>
 </AnchorPane>

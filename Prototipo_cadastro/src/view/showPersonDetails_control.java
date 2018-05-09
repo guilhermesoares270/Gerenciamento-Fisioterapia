@@ -39,13 +39,7 @@ public class showPersonDetails_control {
 	private void initialize() {
 
 		lb_nascimento.setText("ttttttttttt");
-		/*
-		if(pessoa != null) {
-			setPersonInfo();
-		}else {
-			System.out.println("O objeto pessoa está vazio");
-		}
-		*/
+
 	}
 	
 	public void setTeste() {

@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Side;
@@ -107,10 +108,6 @@ public class consulta_control {
 		return valid;
 	}
 	
-	public void getDay() {
-		
-	}
-	
 	public void setTextField(String newText, TextField tf) {
 		
 		System.out.println(newText);
@@ -141,36 +138,87 @@ public class consulta_control {
 		}
 	}
 	
+	///////////////////
+	///modificar
+	//////////////////
 	public void verifyIfExist() {
-		
+	
 		try(Connection conn = DriverManager.getConnection(sqlite_connect.JDBC + "fisioterapiaSUS.db")){
 			
 			String verify = "SELECT * FROM consulta;";
 			
-			Statement st = conn.prepareStatement(verify);
-			ResultSet rs = st.executeQuery(verify);
+			PreparedStatement stmt = conn.prepareStatement(verify);
+			ResultSet rs = stmt.executeQuery();
 			
 			if(!rs.isBeforeFirst()) {
 				System.out.println("O registro não existe ainda");
 			}else {
 				System.out.println("Verificando se existe alguma vaga");
 				while(rs.next()) {
-					long paciente1 = rs.getLong("paciente1");
-					long paciente2 = rs.getLong("paciente1");
-					long paciente3 = rs.getLong("paciente1");
+					System.out.println("" + day.getEditor().getText());
 					
-					if(paciente1 != 0)
-						System.out.println("paciente1 está vago");
-					else if(paciente2 != 0)
-						System.out.println("paciente2 está vago");
-					else if(paciente3 != 0)
-						System.out.println("paciente3 está vago");
+					String data = rs.getString("data");
+					System.out.println("Data atual sqlite " + data);
+					String horario_inicio = rs.getString("horario_inicio");
+					
+					
+					if(data.equalsIgnoreCase(cliente_control.getformatter.format(LocalDate.now()))) {
+						System.out.println("data atual " + data + " é igual a data do dia " + cliente_control.getformatter.format(LocalDate.now()));
+					
+						if(data.equalsIgnoreCase(day.getEditor().getText())) {
+							System.out.println("Já tem cadastrado nesse dia");
+							if(horario_inicio.equalsIgnoreCase("07:00:00")) {
+								System.out.println("No horario: 07:00:00");
+							}else if(horario_inicio.equalsIgnoreCase("07:50:00")) {
+								System.out.println("No horario: 07:50:00");
+							}else if(horario_inicio.equalsIgnoreCase("08:40:00")) {
+								System.out.println("No horario: 08:40:00");
+							}else if(horario_inicio.equalsIgnoreCase("01:00:00")) {
+								System.out.println("No horario: 01:00:00");
+							}else if(horario_inicio.equalsIgnoreCase("01:50:00")) {
+								System.out.println("No horario: 01:50:00");
+							}else if(horario_inicio.equalsIgnoreCase("02:40:00")) {
+								System.out.println("No horario: 02:40:00");
+							}
+						}
+						
+						long paciente1= rs.getLong("paciente1");
+						long paciente2 = rs.getLong("paciente2");
+						long paciente3 = rs.getLong("paciente3");
+						
+						//System.out.println(Long.toString(paciente1).length());
+						if(Long.toString(paciente1).length() == 11) {
+							System.out.println("paciente1 está cadastrado");
+							this.paciente1.setDisable(true);
+						}else {
+							System.out.println("paciente1 está vago");
+						}
+						
+						//System.out.println(Long.toString(paciente2).length());
+						if(Long.toString(paciente2).length() == 11) {
+							System.out.println("paciente1 está cadastrado");
+							this.paciente2.setDisable(true);
+						}else {
+							System.out.println("paciente2 está vago");
+						}
+						
+						//System.out.println(Long.toString(paciente3).length());
+						if(Long.toString(paciente3).length() == 11) {
+							System.out.println("paciente1 está cadastrado");
+							this.paciente3.setDisable(true);
+						}else {
+							System.out.println("paciente3 está vago");
+						}	
+					
+					}
+
 				}
 			}
-			
 		}catch(SQLException e) {
 			e.getSQLState();
 			e.getStackTrace();
+		}finally {
+			System.out.println("Terminando verifyIfExist");
 		}
 	}
 	
@@ -179,7 +227,7 @@ public class consulta_control {
 		
 		//Inicia a data com o dia atual
 		day.getEditor().setText(cliente_control.getformatter.format(LocalDate.now()));
-
+		
 		cadastrar.setOnAction((ActionEvent) -> {
 
 			setSelectedDay(setDate());
@@ -237,14 +285,17 @@ public class consulta_control {
 		hor1.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
 			//change select
 			selectPane(hor1);
+			
 			setSelectedHour("7:00:00");
 			System.out.println("" + getSelectedHour());
+			verifyIfExist();
 		});
 		
 		hor2.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
 			selectPane(hor2);
 			setSelectedHour("7:50:00");
 			System.out.println("" + getSelectedHour());
+			verifyIfExist();
 		});
 		
 		hor3.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{

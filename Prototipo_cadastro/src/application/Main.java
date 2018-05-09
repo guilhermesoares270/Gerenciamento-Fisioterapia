@@ -23,14 +23,30 @@ public class Main extends Application
 		this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Fisioterapia");
 		
-        initConsulta();
+        initPrincipal();
+        //initConsulta();
         
         //initConsultar();
-        
         //initCadastro();
         //initTest();
         //showPersonDeatails();
         //initPesquisar();
+	}
+	
+	public void initPrincipal() {
+		
+		try {
+			AnchorPane cadastro = (AnchorPane) FXMLLoader.load(Main.class.getResource("/view/Principal.fxml"));
+			Scene scene = new Scene(cadastro);
+			
+			primaryStage.setScene(scene);
+			primaryStage.setTitle("Tela Inicial");
+			//primaryStage.resizableProperty().setValue(Boolean.FALSE);
+			primaryStage.show();
+		}catch(Exception e) {
+			info.info(e.getMessage());
+		}
+		
 	}
 	
 	public void initConsulta() {

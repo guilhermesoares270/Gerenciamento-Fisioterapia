@@ -93,9 +93,11 @@ public class Fisioterapeuta extends Pessoa{
 			PreparedStatement pst4 = conn.prepareStatement(fisioterapeuta, Statement.RETURN_GENERATED_KEYS);
 			pst4.setLong(1, crefito);
 			
-			pst4.executeUpdate();
+			//pst4.executeUpdate();
 			
 			checkInsert(conn, pst4);
+
+			conn.commit();
 			
 		}catch(SQLException e) {
 			logger.log(Level.WARNING, e.getMessage(), e);

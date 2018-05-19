@@ -9,28 +9,27 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-import application.Main;
-import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import utility.Pessoa;
 import utility.consultas_dia;
 import utility.sqlite_connect;
 
 public class principal_control {
-	
+
 	Stage stage;
 	
 	List<consultas_dia> horarios = new ArrayList<consultas_dia>();
 	
+	@FXML private Label lb_name;
+	@FXML private HBox cadastrar;
 	@FXML private HBox paciente;
 	@FXML private HBox fisioterapeuta;
 	@FXML private HBox consulta;
+	@FXML private HBox pesquisa;
 	
 	@FXML private TableView<consultas_dia> eventos;
 
@@ -41,43 +40,66 @@ public class principal_control {
 	@FXML
 	private TableColumn<consultas_dia, String> tc_dia;
 	
+	public void init(int lvl_acesso, String nome) {
+		lb_name.setText(nome);
+		if(lvl_acesso == 0) {
+			System.out.println("Administrador");
+		}else if(lvl_acesso == 1) {
+			System.out.println("Atendente");
+			//paciente.setDisable(true);
+		}
+	}
+	
+	
+	/////////////////////////////////////////////
+	@FXML
+	private cliente_control cc_controller;
+	
 	@FXML
 	private void initialize() {
 		
 		loadConsultasDia();
-
+		
+		cadastrar.setOnMouseEntered((event) -> {
+			//cadastrar.setStyle("-fx-cursor: hand;");
+		});
+		
 		paciente.setOnMouseClicked((MouseEvent) -> {
-			System.out.println("Mouse on paciente");
-			
+			System.out.println("Mouse on paciente");			
 			try {
 				stage = new Stage();
-				AnchorPane pane = (AnchorPane) FXMLLoader.load(getClass().getResource("/view/cadastro_cliente.fxml"));
-				Scene scene = new Scene(pane);
+				FXMLLoader loader = new FXMLLoader();
+		        loader.setLocation(getClass().getResource("/view/cadastro_cliente.fxml"));
+		        AnchorPane cadastroPaciente = (AnchorPane) loader.load();
+
+		        cc_controller = loader.getController();
+		        cc_controller.init("Paciente");
 				
-				stage.setScene(scene);
-				stage.show();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		        Scene scene = new Scene(cadastroPaciente);
+		        stage.setScene(scene);
+				stage.show();	
+			}catch(IOException e) {
+				e.getStackTrace();
 			}
-			
 		});
 		
 		fisioterapeuta.setOnMouseClicked((MouseEvent) -> {
 			System.out.println("Mouse on paciente");
-			
 			try {
 				stage = new Stage();
-				AnchorPane pane = (AnchorPane) FXMLLoader.load(getClass().getResource("/view/cadastro_cliente.fxml"));
-				Scene scene = new Scene(pane);
+				FXMLLoader loader = new FXMLLoader();
+		        loader.setLocation(getClass().getResource("/view/cadastro_cliente.fxml"));
+		        AnchorPane cadastroPaciente = (AnchorPane) loader.load();
+
+		        cc_controller = loader.getController();
+		        cc_controller.init("Fisioterapeuta");
 				
-				stage.setScene(scene);
-				stage.show();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		        Scene scene = new Scene(cadastroPaciente);
+		        stage.setScene(scene);
+				stage.show();	
+			}catch(IOException e) {
+				e.getStackTrace();
 			}
-			
 		});
 		
 		consulta.setOnMouseClicked((MouseEvent) -> {
@@ -96,6 +118,22 @@ public class principal_control {
 			}
 			
 		});
+		
+		pesquisa.setOnMouseClicked((MouseEvent) -> {
+			
+			try {
+				stage = new Stage();
+				AnchorPane pane = (AnchorPane) FXMLLoader.load(getClass().getResource("/view/sistema_pesquisa.fxml"));
+				Scene scene = new Scene(pane);
+				
+				stage.setScene(scene);
+				stage.show();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+		
 	}
 	
 	public void loadConsultasDia() {
@@ -118,7 +156,7 @@ public class principal_control {
 				while(rs.next()) {
 					dia = rs.getString("data");
 					hora = rs.getString("horario_inicio");
-					
+
 					if(dia.equalsIgnoreCase(dia_atual)) {
 						System.out.println("data = " + dia);
 						System.out.println("hora = " + hora);
@@ -131,8 +169,7 @@ public class principal_control {
 					}	
 				}
 				setTable();
-			}
-			
+			}		
 		}catch(SQLException e) {
 			e.getStackTrace();
 		}
@@ -150,7 +187,6 @@ public class principal_control {
 			i++;
 		}
 		//Mostra os dados na tabela
-				eventos.getItems().addAll(horarios);//original
+		eventos.getItems().addAll(horarios);//original
 	}
-	
 }

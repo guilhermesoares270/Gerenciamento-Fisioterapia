@@ -1,7 +1,5 @@
 package utility;
 
-import java.sql.*;
-
 public class consultas_dia {
 	
 	String tipo;
@@ -15,7 +13,7 @@ public class consultas_dia {
 	}
 
 	public String getHora() {
-		return dia;
+		return hora;
 	}
 	
 	public void setHora(String hora) {

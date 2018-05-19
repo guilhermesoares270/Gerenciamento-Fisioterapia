@@ -24,9 +24,9 @@
          <children>
             <AnchorPane fx:id="leftPane" prefHeight="378.0" prefWidth="401.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label text="Cadastro de clientes">
+                  <Label text="Cadastro de consultas">
                      <font>
-                        <Font size="16.0" />
+                        <Font size="20.0" />
                      </font>
                      <padding>
                         <Insets left="10.0" />

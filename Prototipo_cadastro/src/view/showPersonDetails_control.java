@@ -1,17 +1,23 @@
 package view;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import utility.*;
 
 public class showPersonDetails_control {
 	
-	//private Pessoa pessoa;
+	private List<Consulta> consulta_list = new ArrayList<Consulta>();
+	@FXML private ListView<String> lv;
 	
-	@FXML
-	private Label lb_nome;
+	@FXML private Button bt_excluir;
+	@FXML private Button bt_alterar;
+	
+	@FXML private Label lb_nome;
 	@FXML private Label lb_nascimento;
 	@FXML private Label lb_sexo;
 	@FXML private Label lb_rg;
@@ -35,11 +41,76 @@ public class showPersonDetails_control {
 	
 	@FXML private Label lb_crefito;
 	
+	
+	public void excluirRegistro(String comando) {
+		
+		try(Connection conn = DriverManager.getConnection(sqlite_connect.JDBC + "fisioterapiaSUS.db")){
+			
+			Statement st = conn.prepareStatement(comando);
+			st.executeUpdate(comando);
+			
+		}catch(SQLException e) {
+			System.out.println("Houve um erro ao apagar o registro");
+			e.getStackTrace();
+		}
+	}
+	
+	public void loadConsultas() {
+		
+		try(Connection conn = DriverManager.getConnection(sqlite_connect.JDBC + "fisioterapiaSUS.db")){
+			
+			String pesquisa = "SELECT * FROM consulta WHERE cpf = " + "'" + lb_cpf.getText() + "'"; 
+			
+			Statement st = conn.prepareStatement(pesquisa);
+			ResultSet rs = st.executeQuery(pesquisa);
+			
+			if(!rs.isBeforeFirst()) {
+				//Não tem nenhum registro
+			}else {
+				int i = 1;
+				while(rs.next()) {
+					consulta_list.add(new Consulta(
+							rs.getLong("paciente1"),
+							rs.getLong("paciente2"),
+							rs.getLong("paciente3"),
+							rs.getLong("fisioterapeuta"),
+							rs.getString("data"),
+							rs.getString("horario_inicio")
+						));
+					lv.getItems().add(Long.toString(consulta_list.get(i).getPaciente1()));
+					//lv.getItems().add()
+					i++;
+				}
+				//lv.getItems().
+			}
+			
+		}catch(SQLException e) {
+			e.getSQLState();
+			e.getStackTrace();
+		}
+	}
+	
 	@FXML
 	private void initialize() {
+		
+		loadConsultas();
 
 		lb_nascimento.setText("ttttttttttt");
-
+		
+		bt_excluir.setOnAction((event) -> {
+			
+			if(lb_crefito.isDisabled() == true) {
+				String excluir = "DELETE FROM paciente WHERE pessoa_id = " + getCpf() + " ;";
+				String exc = "DELETE FROM dados_pessoais WHERE cpf = " + getCpf() + " ;";
+				excluirRegistro(excluir);
+				excluirRegistro(exc);
+			}else {
+				String excluir = "DELETE FROM fisioterapeuta WHERE pessoa_id = " + getCpf() + " ;";
+				String exc = "DELETE FROM dados_pessoais WHERE cpf = " + getCpf() + " ;";
+				excluirRegistro(excluir);
+				excluirRegistro(exc);
+			}			
+		});
 	}
 	
 	public void setTeste() {
@@ -111,6 +182,10 @@ public class showPersonDetails_control {
 	
 	public void setCPF(String cpf) {
 		lb_cpf.setText(cpf);
+	}
+	
+	public String getCpf() {
+		return lb_cpf.getText();
 	}
 	
 	public void setRua(String rua) {

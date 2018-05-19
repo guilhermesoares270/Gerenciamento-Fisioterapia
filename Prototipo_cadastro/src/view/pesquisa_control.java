@@ -6,44 +6,34 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
-
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
-import utility.Fisioterapeuta;
 import utility.Paciente;
 import utility.Pessoa;
 import utility.sqlite_connect;
 
 public class pesquisa_control {
-	
-	//teste
+
 	private long limit = 2;
 	private long offset = 0;
 	
 	private long indexSearch = limit;
 	private String consultar;
 	private long maxNumberOfResults;
-	//private long limiteInicio = 0, limiteFim = 2;
 	
 	Logger logger = Logger.getLogger(this.getClass().getName());
 	
-	//private ObservableList<Paciente> personData = FXCollections.observableArrayList();
 	private ObservableList<Pessoa> personData = FXCollections.observableArrayList();
-	
-	//Valor selectionado pelo mouse
+
 	private Pessoa selected_pessoa = null;
 	
 	@FXML
@@ -62,16 +52,12 @@ public class pesquisa_control {
 	private Label lb_pageNumber;
 	
 	@FXML
-	//private TableView<Paciente> tv_tabela;
 	public TableView<Pessoa> tv_tabela;
 	@FXML
-	//private TableColumn<Paciente, String> tc_cargo;
 	private TableColumn<Pessoa, String> tc_cargo;
 	@FXML
-	//private TableColumn<Paciente, String> tc_nome;
 	private TableColumn<Pessoa, String> tc_nome;
 	@FXML
-	//private TableColumn<Paciente, String> tc_email;
 	private TableColumn<Pessoa, String> tc_email;
 	
 	@FXML
@@ -80,7 +66,6 @@ public class pesquisa_control {
 	@FXML
 	private void initialize() throws IOException {
 
-        /////////////////////////////////////////////////////////////////
 		cb_busca.setPromptText("Busca");
 		cb_busca.getItems().addAll("Todos","Paciente", "Fisioterapeuta");
 
@@ -92,9 +77,9 @@ public class pesquisa_control {
 				
 				offset -= 2;
 				
-				personData.clear();///remove all elements of the list
+				personData.clear();
 				tv_tabela.getItems().clear();
-				searchData(consultar);//procura
+				searchData(consultar);
 				
 				setTable();
 			}
@@ -110,9 +95,9 @@ public class pesquisa_control {
 				if(indexSearch <= maxNumberOfResults) {
 					offset += 2;
 					
-					personData.clear();///remove all elements of the list
+					personData.clear();
 					tv_tabela.getItems().clear();
-					searchData(consultar);//procura
+					searchData(consultar);
 					
 					setTable();
 				}
@@ -122,8 +107,10 @@ public class pesquisa_control {
 		
 		bt_pesquisar.setOnAction((event) -> {
 			
-			//if the list have itens the list will be cleaned
-			//clean();
+			////////////teste///////////////
+			personData.clear();
+			tv_tabela.getItems().clear();
+			///////////////////////////////
 			
 			consultar = tf_pesquisa.getText();
 			System.out.println("Consultar  = " + consultar);
@@ -136,13 +123,11 @@ public class pesquisa_control {
 	}
 	
 	public void setTable() {
-		//Printa a lista
+
 		System.out.println("Tamanho da lista: " + personData.size());
 
 		int i = 0;
 		while(i < personData.size()) {
-			
-			//System.out.println("indexSearch = " + indexSearch);
 			tc_nome.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getNome()));
 			tc_email.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getEmail()));
 			
@@ -291,7 +276,7 @@ public class pesquisa_control {
 		return counter;
 	}
 	
-	//Pessoa getters and setter
+		//Pessoa getters and setter
 		public void setPessoa(Pessoa pessoa) {
 			this.selected_pessoa = pessoa;
 		}

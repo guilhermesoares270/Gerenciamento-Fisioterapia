@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="377.0" prefWidth="550.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.141" fx:controller="view.cadastro_usuario">
+   <children>
+      <VBox layoutX="58.0" layoutY="57.0" prefHeight="252.0" prefWidth="435.0">
+         <children>
+            <HBox>
+               <children>
+                  <Label text="Nome:">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <TextField fx:id="nome" />
+            <Label text="Sobrenome:" />
+            <TextField fx:id="sobrenome" />
+            <Label text="CPF:" />
+            <TextField fx:id="cpf" />
+            <Label text="e-mail:" />
+            <TextField fx:id="email" />
+            <CheckBox fx:id="acesso" mnemonicParsing="false" text="ADM" />
+            <Label text="Senha:" />
+            <PasswordField fx:id="senha" />
+         </children>
+      </VBox>
+      <Label layoutX="173.0" layoutY="24.0" text="Cadastro de Usuario">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Button fx:id="cadastrar" layoutX="221.0" layoutY="309.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="110.0" text="Cadastrar" />
+   </children>
+</AnchorPane>

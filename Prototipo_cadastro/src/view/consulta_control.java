@@ -6,6 +6,7 @@ import javafx.scene.layout.*;
 import utility.Consulta;
 import utility.sqlite_connect;
 import java.sql.*;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ public class consulta_control {
 	
 	private Logger logger = Logger.getLogger(getClass().getName());
 	
+	private List<LocalDate> feriados = new ArrayList<LocalDate>();
 	private List<Long> possible = new ArrayList<Long>();
 	
 	Consulta consulta = null;
@@ -53,6 +55,7 @@ public class consulta_control {
 	boolean fisio = true;
 	
 	//Pega a data selecionada no DatePicker
+	/*
 	public String setDate() {
 		String retorno = null;
 		try{
@@ -73,6 +76,7 @@ public class consulta_control {
 		}
 		return retorno;
 	}
+	*/
 
 	//Verifica se o cpf passado é válido
 	public boolean checkCValid(String text) {
@@ -106,10 +110,8 @@ public class consulta_control {
 					possible.add(rs.getLong("cpf"));
 					i++;			
 				}
-				//System.out.println("Elemento adicionado: " + i);
 				valid = true;
 			}
-			//System.out.println("Tamanho da lista: " + possible.size());
 			
 		}catch(SQLException e) {
 			e.getStackTrace();
@@ -319,13 +321,12 @@ public class consulta_control {
 				update += " fisioterapeuta = " + this.fisioterapeuta.getText() + " ";
 			}else {
 				System.out.println("Getting null");
-				update += " paciente3 = " +  null + " ";
+				update += " fisioterapeuta = " +  null + " ";
 			}
 		}else {
 			update += "fisioterapeuta = (SELECT fisioterapeuta FROM consulta WHERE data = " + "'" + selectedDay + "'" + " AND " + "horario_inicio = " + "'" + selectedHour + "'" + "), ";
 		}
 		update += "WHERE data = " + "'" + getSelectedDay() + "'" + " AND horario_inicio = " + "'" + getSelectedHour() + "';";
-		//update += ";";
 		
 		return update;
 	}
@@ -391,9 +392,52 @@ public class consulta_control {
 		paciente3.setDisable(false);
 	}
 	
+	public void getFeriados() {
+		System.out.println("Iniciando getFeriados");
+		try(Connection conn = DriverManager.getConnection(sqlite_connect.JDBC + "fisioterapiaSUS.db")){
+			
+			String pesquisa = "SELECT * FROM feriados;";
+			PreparedStatement stmt = conn.prepareStatement(pesquisa);
+			ResultSet rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				LocalDate date = LocalDate.parse(rs.getString("data"), cliente_control.getformatter);
+				System.out.println("Data = " + rs.getString("data"));
+				feriados.add(date);
+			}
+			System.out.println("feriados size: " + feriados.size());
+		}catch(SQLException e) {
+			
+		}
+	}
+	
 	@FXML
 	private void initialize() {
-	
+		
+		///////////////////////////////////////////////////////////
+		
+    	getFeriados();
+		
+		
+		day.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+
+                for(int i = 0; i < feriados.size(); i++) {
+                	//date.equals(feriados.get(i));
+                	setDisable(empty || 
+                			date.getDayOfWeek() == DayOfWeek.SUNDAY ||
+                    		date.getDayOfWeek()== DayOfWeek.SATURDAY ||
+                			date.equals(feriados.get(i)));
+                }
+                
+            }
+        });
+        day.setEditable(false);
+		
+		/////////////////////////////////////////////////////////////
+		
 		//Inicia a data com o dia atual
 		day.getEditor().setText(cliente_control.getformatter.format(LocalDate.now()));
 		
@@ -410,7 +454,7 @@ public class consulta_control {
 		
 		cadastrar.setOnAction((ActionEvent) -> {
 
-			setSelectedDay(setDate());
+			setSelectedDay(cliente_control.setDate(day));
 			
 			System.out.println("Canregister " + canRegister);
 			System.out.println("SelectedDay " + selectedDay);
@@ -427,15 +471,37 @@ public class consulta_control {
 
 				System.out.println("SelecttedDay: " + selectedDay);
 				
-				//commitUpdate(update);
 				commitFirst();
+				
+				//Criar tambem um registro para as presenças nessa tela
+				//todas irão iniciar com 0, ou seja, falta
+				
+				Presenca_control.createPresenca(paciente1.getText(), 0, selectedDay, selectedHour);
+				Presenca_control.createPresenca(paciente2.getText(), 0, selectedDay, selectedHour);
+				Presenca_control.createPresenca(paciente3.getText(), 0, selectedDay, selectedHour);
+				//////////////////////////////////////
+				
 			}else if (canAlter == true) {
 				
 				System.out.println("canAlter = true");
 				
 				update = BuildUpdate(paci1, paci2, paci3, fisio);
-				//System.out.println("update = " + update);
 				commitUpdate(update);
+				
+				//cria o registro caso o paciente seja diferente de vazio
+				TextField pacientes[] = new TextField[3];
+				pacientes[0] = paciente1;
+				pacientes[1] = paciente2;
+				pacientes[2] = paciente3;
+				
+				for(int i = 0; i < 3; i++) {
+					if(pacientes[i].getText().equals("") || pacientes[i].getText() == null) {
+						//do nothing
+						System.out.println("TextField Vazio");
+					}else {
+						Presenca_control.createPresenca(pacientes[i].getText(), 0, selectedDay, selectedHour);
+					}
+				}
 				
 			}else {
 				System.out.println("Tem algum problema nos registros");

@@ -26,90 +26,113 @@
                   <Insets left="10.0" />
                </padding>
             </Label>
-            <HBox fx:id="cadastrar" prefHeight="44.0" prefWidth="313.0" styleClass="hbox" stylesheets="@teste.css">
+            <VBox prefHeight="213.0" prefWidth="300.0">
                <children>
-                  <Label prefHeight="54.0" prefWidth="308.0" text="Cadastar" textFill="WHITE">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
+                  <HBox fx:id="cadastrar" prefHeight="44.0" prefWidth="313.0" styleClass="hbox" stylesheets="@teste.css">
+                     <children>
+                        <Label prefHeight="54.0" prefWidth="308.0" text="Cadastar" textFill="WHITE">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox fx:id="paciente" prefHeight="24.0" prefWidth="291.0">
+                     <children>
+                        <Label prefHeight="38.0" prefWidth="301.0" styleClass="hbox" stylesheets="@teste.css" text="Paciente" textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </Label>
+                     </children>
                      <padding>
                         <Insets left="10.0" />
                      </padding>
-                  </Label>
-               </children>
-            </HBox>
-            <HBox fx:id="paciente" layoutX="10.0" layoutY="98.0" prefHeight="24.0" prefWidth="291.0">
-               <children>
-                  <Label prefHeight="38.0" prefWidth="301.0" styleClass="hbox" stylesheets="@teste.css" text="Paciente" textFill="WHITE">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
+                  </HBox>
+                  <HBox fx:id="fisioterapeuta" prefHeight="24.0" prefWidth="291.0">
+                     <children>
+                        <Label prefHeight="38.0" prefWidth="301.0" styleClass="hbox" stylesheets="@teste.css" text="Fisioterapeuta" textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </Label>
+                     </children>
                      <padding>
                         <Insets left="10.0" />
                      </padding>
-                  </Label>
-               </children>
-               <padding>
-                  <Insets left="10.0" />
-               </padding>
-            </HBox>
-            <HBox fx:id="fisioterapeuta" layoutX="10.0" layoutY="142.0" prefHeight="24.0" prefWidth="291.0">
-               <children>
-                  <Label prefHeight="38.0" prefWidth="301.0" styleClass="hbox" stylesheets="@teste.css" text="Fisioterapeuta" textFill="WHITE">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
+                  </HBox>
+                  <HBox fx:id="consulta" prefHeight="24.0" prefWidth="291.0">
+                     <children>
+                        <Label prefHeight="38.0" prefWidth="301.0" styleClass="hbox" stylesheets="@teste.css" text="Consulta" textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </Label>
+                     </children>
                      <padding>
                         <Insets left="10.0" />
                      </padding>
-                  </Label>
-               </children>
-               <padding>
-                  <Insets left="10.0" />
-               </padding>
-            </HBox>
-            <HBox fx:id="consulta" layoutX="10.0" layoutY="166.0" prefHeight="24.0" prefWidth="291.0">
-               <children>
-                  <Label prefHeight="38.0" prefWidth="301.0" styleClass="hbox" stylesheets="@teste.css" text="Consulta" textFill="WHITE">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
+                  </HBox>
+                  <HBox fx:id="usuario" layoutX="10.0" layoutY="102.0" prefHeight="24.0" prefWidth="291.0">
+                     <children>
+                        <Label prefHeight="38.0" prefWidth="301.0" styleClass="hbox" stylesheets="@teste.css" text="Usuário" textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </Label>
+                     </children>
                      <padding>
                         <Insets left="10.0" />
                      </padding>
-                  </Label>
+                  </HBox>
                </children>
-               <padding>
-                  <Insets left="10.0" />
-               </padding>
-            </HBox>
-            <HBox layoutX="10.0" layoutY="98.0" prefHeight="44.0" prefWidth="313.0">
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <Label prefHeight="54.0" prefWidth="308.0" styleClass="hbox" stylesheets="@teste.css" text="Consultar" textFill="WHITE">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
+                  <HBox prefHeight="44.0" prefWidth="313.0">
+                     <children>
+                        <Label prefHeight="54.0" prefWidth="308.0" styleClass="hbox" stylesheets="@teste.css" text="Consultar" textFill="WHITE">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox fx:id="pesquisa" prefHeight="24.0" prefWidth="291.0">
+                     <children>
+                        <Label prefHeight="38.0" prefWidth="301.0" styleClass="hbox" stylesheets="@teste.css" text="Consultas Marcadas" textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </Label>
+                     </children>
                      <padding>
                         <Insets left="10.0" />
                      </padding>
-                  </Label>
+                  </HBox>
                </children>
-            </HBox>
-            <HBox fx:id="pesquisa" layoutX="10.0" layoutY="142.0" prefHeight="24.0" prefWidth="291.0">
-               <children>
-                  <Label prefHeight="38.0" prefWidth="301.0" styleClass="hbox" stylesheets="@teste.css" text="Consultas Marcadas" textFill="WHITE">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                  </Label>
-               </children>
-               <padding>
-                  <Insets left="10.0" />
-               </padding>
-            </HBox>
+            </VBox>
          </children>
       </VBox>
       <VBox layoutX="300.0" prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: #16a085;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -126,7 +149,7 @@
                   <DropShadow />
                </effect>
             </Pane>
-            <TableView fx:id="eventos" prefHeight="312.0" prefWidth="600.0">
+            <TableView fx:id="tv_eventos" prefHeight="319.0" prefWidth="600.0">
               <columns>
                 <TableColumn fx:id="tc_tipo" prefWidth="183.0" text="Tipo" />
                 <TableColumn fx:id="tc_dia" minWidth="2.0" prefWidth="238.0" text="Dia" />
@@ -136,7 +159,10 @@
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TableView>
-            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #6c5ce7;" VBox.vgrow="ALWAYS" />
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Pane prefHeight="198.0" prefWidth="600.0" style="-fx-background-color: #6c5ce7;" VBox.vgrow="ALWAYS" />
+               </children></VBox>
          </children>
       </VBox>
    </children>

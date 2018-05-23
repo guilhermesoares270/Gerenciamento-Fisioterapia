@@ -30,38 +30,22 @@ public class pesquisa_control {
 	private String consultar;
 	private long maxNumberOfResults;
 	
-	Logger logger = Logger.getLogger(this.getClass().getName());
+	private Logger logger = Logger.getLogger(this.getClass().getName());
 	
 	private ObservableList<Pessoa> personData = FXCollections.observableArrayList();
 
 	private Pessoa selected_pessoa = null;
 	
-	@FXML
-	private TextField tf_pesquisa;
-	
-	@FXML
-	private Button bt_pesquisar;
-	
-	@FXML 
-	private Button bt_anterior;
-	
-	@FXML
-	private Button bt_proximo;
-	
-	@FXML
-	private Label lb_pageNumber;
-	
-	@FXML
-	public TableView<Pessoa> tv_tabela;
-	@FXML
-	private TableColumn<Pessoa, String> tc_cargo;
-	@FXML
-	private TableColumn<Pessoa, String> tc_nome;
-	@FXML
-	private TableColumn<Pessoa, String> tc_email;
-	
-	@FXML
-	private ComboBox<String> cb_busca;
+	@FXML private TextField tf_pesquisa;
+	@FXML private Button bt_pesquisar;
+	@FXML private Button bt_anterior;
+	@FXML private Button bt_proximo;
+	@FXML private Label lb_pageNumber;
+	@FXML public TableView<Pessoa> tv_tabela;
+	@FXML private TableColumn<Pessoa, String> tc_cargo;
+	@FXML private TableColumn<Pessoa, String> tc_nome;
+	@FXML private TableColumn<Pessoa, String> tc_email;
+	@FXML private ComboBox<String> cb_busca;
 
 	@FXML
 	private void initialize() throws IOException {

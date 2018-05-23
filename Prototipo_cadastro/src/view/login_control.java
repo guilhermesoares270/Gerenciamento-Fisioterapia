@@ -25,27 +25,14 @@ public class login_control {
 
 	@FXML
 	private void initialize() {
-		
-		/*
-		entrar.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
-			if(e.getCode() == KeyCode.ENTER) {
-				System.out.println("Enter Pressed");
-			}
-		});
-		nome.addEventHandler(KeyEvent.KEY_PRESSED, n -> {});;
-		
-		senha.addEventHandler(KeyEvent.KEY_PRESSED, s -> {});
-	*/
-		
+
 		entrar.setOnAction((event) -> {
-			//System.out.println("Action on entrar");
+			
 			try(Connection conn = DriverManager.getConnection(sqlite_connect.JDBC + "fisioterapiaSUS.db")){
-				
-				//System.out.println("nome = " + nome.getText());
-				//System.out.println("senha = " + senha.getText());
-				
-				String pesquisa = "SELECT * FROM login WHERE nome = " + "'" + nome.getText() + "'" + " AND " + "senha = " + senha.getText();
-				//System.out.println("pesquisa = " + pesquisa);
+
+				//String pesquisa = "SELECT * FROM login WHERE nome = " + "'" + nome.getText() + "'" + " AND " + "senha = " + senha.getText();
+				String pesquisa = "SELECT * FROM login WHERE nome = " + "'" + nome.getText() + "'" + " AND senha = " + "'" + cadastro_usuario.hash_sha256(senha.getText()) + "';";
+				System.out.println("Pesquisa = " + pesquisa);
 				
 				Statement st = conn.createStatement();
 				ResultSet rs = st.executeQuery(pesquisa);
@@ -61,6 +48,7 @@ public class login_control {
 						//long cpf = rs.getLong("cpf");
 						//String email = rs.getString("email");
 						lvl = rs.getInt("acesso");
+						String senha = rs.getString("senha");
 					}			
 					loadMain(lvl, nome);
 					Stage stage = (Stage)entrar.getScene().getWindow();

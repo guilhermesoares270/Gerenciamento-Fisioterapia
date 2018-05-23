@@ -90,7 +90,7 @@ public class cliente_control {
 					Long.parseLong(tf_cpf.getText())
 			);
 			
-			pc.setNascimento(setDate());
+			pc.setNascimento(setDate(dp_nascimento));
 			
 			if(rb_masculino.isSelected()) {
 				pc.setSexo("Masculino");
@@ -119,7 +119,7 @@ public class cliente_control {
 					Long.parseLong(tf_crefito.getText())
 			);
 			
-			pc.setNascimento(setDate());
+			pc.setNascimento(setDate(dp_nascimento));
 			
 			if(rb_masculino.isSelected()) {
 				pc.setSexo("Masculino");
@@ -145,13 +145,13 @@ public class cliente_control {
 		
 	}
 	
-	public String setDate() {
+	public static String setDate(DatePicker dp) {
 		String retorno = null;
 		try{
 			//Revisar
-			if(dp_nascimento.getEditor().getText() != null) {
+			if(dp.getEditor().getText() != null) {//dp_nascimento.getEditor().getText() != null) {
 				System.out.println("Iniciando verificação data");
-				LocalDate ld = dp_nascimento.getValue();
+				LocalDate ld = dp.getValue();//dp_nascimento.getValue();
 				if(ld == null) {
 					retorno = getformatter.format(LocalDate.now());
 				}else {

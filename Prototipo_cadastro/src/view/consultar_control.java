@@ -57,6 +57,10 @@ public class consultar_control {
                 			pc_control.getPessoa().printData();
 
                 			spd_control.setPersonInfo(pc_control.getPessoa());
+                			
+                			////////////////////////////////////
+                			spd_control.setConsultasMarcadas();
+                			///////////////////////////////////
   
                 			System.out.println("mouse clicked on pesquisar");	
             			}else {

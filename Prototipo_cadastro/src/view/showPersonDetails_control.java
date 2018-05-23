@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import utility.*;
 
 public class showPersonDetails_control {
@@ -33,6 +34,8 @@ public class showPersonDetails_control {
 	@FXML private Label lb_email;
 	@FXML private Label lb_telefone;
 	@FXML private Label lb_celular;
+	
+	@FXML private TextArea ta_presencas;
 	
 	//Opcionais
 	@FXML private Label lb_num_sus;
@@ -78,12 +81,9 @@ public class showPersonDetails_control {
 							rs.getString("horario_inicio")
 						));
 					lv.getItems().add(Long.toString(consulta_list.get(i).getPaciente1()));
-					//lv.getItems().add()
 					i++;
 				}
-				//lv.getItems().
-			}
-			
+			}		
 		}catch(SQLException e) {
 			e.getSQLState();
 			e.getStackTrace();
@@ -93,9 +93,11 @@ public class showPersonDetails_control {
 	@FXML
 	private void initialize() {
 		
+		//ta_presencas.setText("TESTE");
+		
 		loadConsultas();
 
-		lb_nascimento.setText("ttttttttttt");
+		//lb_nascimento.setText("ttttttttttt");
 		
 		bt_excluir.setOnAction((event) -> {
 			
@@ -118,6 +120,43 @@ public class showPersonDetails_control {
 		//lb_nascimento.setText("17-03-1994");
 	}
 	
+	public void setConsultasMarcadas() {
+		System.out.println("----------------------- INICIANDO SETCONSULTASMARCADAS -----------------------");
+		try(Connection conn = DriverManager.getConnection(sqlite_connect.JDBC + "fisioterapiaSUS.db")){
+			
+			String pesquisar = "SELECT * FROM presenca WHERE paciente = " + lb_cpf.getText() + ";";
+			PreparedStatement stmt = conn.prepareStatement(pesquisar);
+			ResultSet rs = stmt.executeQuery();
+			
+			if(!rs.isBeforeFirst()) {
+				System.out.println("Consultas Vazio");
+				//vazio
+			}else {
+				while(rs.next()) {
+					String dia = rs.getString("dia");
+					String hora = rs.getString("hora");
+					int presente = rs.getInt("presente");
+					System.out.println("dia = " + dia + " hora = " + hora);
+
+					ta_presencas.appendText("Dia: " + dia + " \n");
+					ta_presencas.appendText("Hora: " + hora + " \n");
+					
+					String present = "falta";
+					if(presente == 0) {
+						present = "presente";
+					}
+					ta_presencas.appendText("Presente: " + present + " \n");
+					ta_presencas.appendText("\n\n");
+					System.out.println("" + dia + "\n" + hora + "\n" + presente + "\n\n");
+				}
+			}
+			
+		}catch(SQLException e) {
+			e.getStackTrace();
+		}
+		
+	}
+	
 	//Verificar se irá funcionar com os atributos privados
 	public void setPersonInfo(Pessoa pessoa) {
 		
@@ -135,10 +174,12 @@ public class showPersonDetails_control {
 			lb_sintomas.setText(((Paciente) pessoa).getSintomas());
 			lb_medicacao.setText(((Paciente) pessoa).getMedicacao());
 			
+			//setConsultasMarcadas();///////////////////////
 		}else if(pessoa.getClass() == Fisioterapeuta.class) {
 			
 			basicInfo(pessoa);
 			lb_crefito.setText(Long.toString(((Fisioterapeuta) pessoa).getCrefito()));
+			//setConsultasMarcadas();////////////////////////
 		}
 		
 	}
